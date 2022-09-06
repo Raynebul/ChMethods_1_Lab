@@ -9,6 +9,6 @@ int main()
    Matrix object;
    object.Readfile();
    object.SLAU();
-   object.Writefile1();
+   object.Writefile();
    return 0;
 }

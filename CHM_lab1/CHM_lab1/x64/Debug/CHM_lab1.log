@@ -1,15 +1,15 @@
 ﻿  Matrix.cpp
-C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(152,41): warning C4244: +=: преобразование "_Ty" в "int", возможна потеря данных
+C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(77,47): warning C4244: +=: преобразование "_Ty" в "int", возможна потеря данных
           with
           [
               _Ty=double
           ]
-C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(164,47): warning C4244: +=: преобразование "_Ty" в "int", возможна потеря данных
+C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(87,47): warning C4244: +=: преобразование "_Ty" в "int", возможна потеря данных
           with
           [
               _Ty=double
           ]
-C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(177,47): warning C4244: +=: преобразование "_Ty" в "int", возможна потеря данных
+C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(98,47): warning C4244: +=: преобразование "_Ty" в "int", возможна потеря данных
           with
           [
               _Ty=double
