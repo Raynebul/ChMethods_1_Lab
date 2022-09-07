@@ -60,6 +60,7 @@ void Matrix::Writefile()
    {
       fout << F[i] << ' ';
    }
+   cout << endl;
 }
 
 void Matrix::LU()
@@ -68,7 +69,7 @@ void Matrix::LU()
    {
       for (int j = 0; j < n; j++)
       {
-         if (i == j)
+         if (i <= j)
          {
             int sum = 0;
             for (int k = 0; k < i; k++)
@@ -76,20 +77,13 @@ void Matrix::LU()
                if (i - k <= m / 2 && j - k <= m / 2)
                   sum += al[i][k - i + m / 2] * au[k][k - j + m / 2];              
             }
-            di[i] = di[i] - sum;
+            if(i==j)
+              di[i] = di[i] - sum;
+            else
+               if (j - i <= m / 2)
+                  au[i][i - j + m / 2] = au[i][i - j + m / 2] - sum;
          }
-         if (i < j)
-         {
-            int sum = 0;
-            for (int k = 0; k < i; k++)
-            {
-               if (i - k <= m / 2 && j - k <= m / 2)
-                  sum += al[i][k - i + m / 2] * au[k][k - j + m / 2];
-            }
-            if (j - i <= m / 2)
-               au[i][i - j + m / 2] = au[i][i - j + m / 2] - sum;
-         }
-         if (i > j)
+         else
          {
             int sum = 0;
             for (int k = 0; k < j; k++)

@@ -5,6 +5,8 @@
 #include <iostream>
 #include <iomanip>
 
+typedef double real;
+
 using namespace std;
 
 class Matrix
@@ -14,8 +16,7 @@ public:
    vector<vector<double>> au;
    vector<double> di;
    vector<double> F;
-   int n;
-   int m;
+   int n, m;
    void Readfile();
    void Writefile();
    void LU();
