@@ -1,6 +1,7 @@
 #include <fstream>
 #include "Matrix.h"
 
+
 using namespace std;
 
 
@@ -20,9 +21,9 @@ int main()
       {
          case 1:
          {
-            object.Readfile();
+            object.Readfile1();
             object.SLAU();
-            object.Writefile();
+            object.Writefile1();
             break;
          }
          case 2:

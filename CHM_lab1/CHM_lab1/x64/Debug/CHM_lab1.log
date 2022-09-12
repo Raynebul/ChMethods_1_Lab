@@ -1,14 +1,8 @@
 ﻿  Main.cpp
   Matrix.cpp
-C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(78,47): warning C4244: +=: преобразование "_Ty" в "int", возможна потеря данных
-          with
-          [
-              _Ty=double
-          ]
-C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(92,47): warning C4244: +=: преобразование "_Ty" в "int", возможна потеря данных
-          with
-          [
-              _Ty=double
-          ]
+C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(149,32): warning C4244: аргумент: преобразование "real" в "const unsigned __int64", возможна потеря данных
+C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(149,44): warning C4244: аргумент: преобразование "real" в "const unsigned __int64", возможна потеря данных
+C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(166,32): warning C4244: аргумент: преобразование "real" в "const unsigned __int64", возможна потеря данных
+C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(166,44): warning C4244: аргумент: преобразование "real" в "const unsigned __int64", возможна потеря данных
   Создание кода...
   CHM_lab1.vcxproj -> C:\Users\Сергей\source\repos\CHM_lab1\x64\Debug\CHM_lab1.exe
