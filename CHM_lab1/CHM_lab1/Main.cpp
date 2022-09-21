@@ -22,7 +22,7 @@ int main()
          case 1:
          {
             object.Readfile1();
-            if (flag) {
+            if (object.flag==true) {
                cout << "ОШИБКА: Ширина ленты больше самой матрицы ";
                return 0;
             }

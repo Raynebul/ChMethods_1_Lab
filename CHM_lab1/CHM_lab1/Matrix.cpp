@@ -41,7 +41,7 @@ int Matrix::Readfile1()
    fopen_s(&file, "input.txt", "r");
    fscanf_s(file, "%d", &n);
    fscanf_s(file, "%d", &ht);
-   if (ht*2+1 >= n)
+   if (ht*2+1 > n)
    {
       flag = true;
       return 0;
