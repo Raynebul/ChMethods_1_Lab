@@ -35,18 +35,23 @@ void Matrix::Readfile()
    }
 }
 
-void Matrix::Readfile1()
+int Matrix::Readfile1()
 {
    FILE* file;
    fopen_s(&file, "input.txt", "r");
    fscanf_s(file, "%d", &n);
-   fscanf_s(file, "%d", &m);
-   ht = (m - 1) / 2;
+   fscanf_s(file, "%d", &ht);
+   if (ht*2+1 >= n)
+   {
+      flag = true;
+      return 0;
+   }
+   //ht = (m - 1) / 2;
    F.resize(n);
    di.resize(n);
    al.resize(n);
    au.resize(n);
-   while (!feof(file))
+   if(!feof(file))
    {
       for (int i = 0; i < n; i++)
       {
@@ -66,7 +71,8 @@ void Matrix::Readfile1()
          fscanf_s(file, SIRF, &F[i]);
 
    }
-
+   fclose(file);
+   return 0;
 }
 
 void Matrix::Writefile()
@@ -109,24 +115,25 @@ void Matrix::Writefile1()
       {
          if (i == j)
             fprintf(file, SIRF, di[i]);
-         if (i < j)
+         if (j > i)
+         {
             if (j - i <= ht)
-               fprintf(file, SIRF, au[i][j-i-1]);
+               if(j<ht)
+                  fprintf(file, SIRF, au[j][ht-j+i]);
+               else
+                  fprintf(file, SIRF, au[j][ht-j+i]);
             else
                fprintf(file, "%d ", 0);
-         if (i > j && i < ht)
-         {
-            fprintf(file, "%d ", al[i][ht - i + j]);
          }
-         else
+         if (i > j)
          {
-            if (i > j)
-            {
-               if (i - j <= ht)
-                  fprintf(file, SIRF, al[i][i - j - 1]);
+            if (i - j <= ht)
+               if (i < ht)
+                  fprintf(file, SIRF, al[i][ht-i+j]);
                else
-                  fprintf(file, "%d ", 0);
-            }
+                  fprintf(file, SIRF, al[i][ht-i+j]);
+            else
+               fprintf(file, "%d ", 0);
          }
       }
       fprintf(file, "\n");
@@ -136,7 +143,7 @@ void Matrix::Writefile1()
    {
       fprintf(file, SIRF, F[i]);
    }
-
+   fclose(file);
 }
 
 void Matrix::LU()
@@ -223,39 +230,64 @@ void Matrix::LU1()
    }
 }
 
-void Matrix::LyF()
+void Matrix::LU2()
 {
-  /* for (int i = 0; i < n; i++)
-   {
-      cout << F[i] << ' ';
-   }
-   */
-   //cout << endl;
    for (int i = 0; i < n; i++)
    {
-      real sum = 0.0;
+      //int ki = ht - 1;
+      for (int k = 0; k < ht && k < i; k++) //i=j
+      {
+         if (i >= ht)
+            di[i] -= al[i][k]*au[i][k];
+         else
+            di[i] -= al[i][ht-i+k]*au[i][ht-i+k]; //+++
+        // ki--;
+      }
+      for (int j = 0; j<ht && n-i-j>1; j++)
+      {
+        // ki = ht - 1;
+         for (int k = 0; k < i && k < ht - j - 1; k++)
+         {
+            if (i >= ht-1 || i + j >= ht - 1)
+               au[i+j+1][ht-j-1] -= al[i][k+j+1] * au[i+j+1][k];
+            else
+               au[i+j+1][ht-j-1] -= al[i][ht-i+k] * au[i+j+1][ht-i+k-j-1];
+           // ki--;
+         }
+      }
+      for (int j = 0; j < ht && n - i - j > 1; j++)
+      {
+         //ki = ht - 2 - j;
+         for (int k = 0; k < ht - j - 1 && k < i; k++)
+         {
+            if (i >= ht-1 || i+j>=ht-1)
+               al[j+i+1][ht-j-1] -= al[i+j+1][k] * au[i][k+j+1]; // добавим +1
+            else
+               al[j+i+1][ht-j-1] -= al[i+j+1][ht-i+k-1-j] * au[i][ht-i+k];
+            ////ki--;
+         }
+         al[j+i+1][ht-j-1] /= di[i];
+      }
+   }
+}
+
+void Matrix::LyF()
+{
+   for (int i = 0; i < n; i++)
+   {
+      //real sum = 0.0;
       for (int j = 0; j < ht && j<i; j++)
       {
          if (i < ht)
          {
-            sum += F[j] * al[i][ht - i + j];
+            F[i] -= al[i][ht - i + j] * F[j];
          }
          else
          {
-            if (i + j >= ht)
-            {
-               sum += F[i - ht + j] * al[i][j];
-            }
+            F[i] -= al[i][j] * F[i - ht + j];
          }
-         F[i] = F[i] - sum;
-
       }
    }
-   /*for (int i = 0; i < n; i++)
-   {
-      cout << F[i] << ' ';
-   }
-   cout << endl; */
 }
 
 void Matrix::Uxy()
@@ -263,22 +295,13 @@ void Matrix::Uxy()
 
    for (int i = n-1; i >= 0; i--)
    {
-      real sum = 0.0;
-      for (int j = 0; j < ht && j<n-i; j++)
+      //real sum = 0.0;
+      for (int j = 0; j < ht && j<n-i-1; j++)
       {
-         if (n-1-i-j > 0)
-         {
-            //sum += F[i+j+1] * au[i][j];
-            F[i] -= F[i + j + 1] * au[i][j];
-         }
-         //F[i] = (F[i] - sum) / di[i];
-         F[i] /= di[i];
+            F[i] -= F[i + j + 1] * au[i+j+1][ht-1-j];
       }
+      F[i] /= di[i];
    }
- /*  for (int i = 0; i < n; i++)
-   {
-      cout << F[i] << ' ';
-   } */
 }
 
 void Matrix::Multiplication()
@@ -288,7 +311,7 @@ void Matrix::Multiplication()
 
 void Matrix::SLAU()
 {
-   LU1();
+   LU2();
    LyF();
    Uxy();
 }

@@ -20,14 +20,16 @@ public:
    vector<vector<real>> au;
    vector<real> di;
    vector<real> F;
+   bool flag = false;
    int n, m;
    int ht;
    void Readfile();
-   void Readfile1();
+   int Readfile1();
    void Writefile();
    void Writefile1();
    void LU();
    void LU1();
+   void LU2();
    void LyF();
    void Uxy();
    void Multiplication();

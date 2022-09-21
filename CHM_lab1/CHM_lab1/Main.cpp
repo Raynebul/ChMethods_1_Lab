@@ -22,7 +22,15 @@ int main()
          case 1:
          {
             object.Readfile1();
+            if (flag) {
+               cout << "ОШИБКА: Ширина ленты больше самой матрицы ";
+               return 0;
+            }
+            //
+              // 
+            //}
             object.SLAU();
+            cout << 1 << endl;
             object.Writefile1();
             break;
          }
