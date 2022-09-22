@@ -20,6 +20,7 @@ public:
    vector<vector<real>> au;
    vector<real> di;
    vector<real> F;
+   vector<real> x, y;
    bool flag = false;
    int n, m;
    int ht;
@@ -32,6 +33,7 @@ public:
    void LU2();
    void LyF();
    void Uxy();
-   void Multiplication();
+   void MultiplicationXY();
+   void MultiplicationYF();
    void SLAU();
 };

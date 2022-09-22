@@ -48,6 +48,8 @@ int Matrix::Readfile1()
    }
    //ht = (m - 1) / 2;
    F.resize(n);
+   x.resize(n);
+   y.resize(n);
    di.resize(n);
    al.resize(n);
    au.resize(n);
@@ -68,7 +70,7 @@ int Matrix::Readfile1()
       for (int i = 0; i < n; i++)
          fscanf_s(file, SIRF, &di[i]);
       for (int i = 0; i < n; i++)
-         fscanf_s(file, SIRF, &F[i]);
+         fscanf_s(file, SIRF, &x[i]);
 
    }
    fclose(file);
@@ -139,6 +141,43 @@ void Matrix::Writefile1()
       fprintf(file, "\n");
    }
    fprintf(file, "\n");
+  
+   //
+   fprintf(file, "заданный x - ");
+   for (int i = 0; i < n; i++)
+   {
+      fprintf(file, SIRF, x[i]);
+   }
+   fprintf(file, "\n");
+   fprintf(file, "x, полученный из y - ");
+   for (int i = 0; i < n; i++)
+   {
+      fprintf(file, SIRF, y[i]);
+   }
+   fprintf(file, "\n");
+   Uxy();
+   fprintf(file, "y, полученный из x - ");
+   for (int i = 0; i < n; i++)
+   {
+      fprintf(file, SIRF, y[i]);
+   }
+   fprintf(file, "\n");
+   MultiplicationXY();
+   fprintf(file, "заданный y - ");
+   for (int i = 0; i < n; i++)
+   {
+      fprintf(file, SIRF, y[i]);
+   }
+   fprintf(file, "\n");
+   //Uxy();
+   fprintf(file, "F, полученный из y - ");
+   for (int i = 0; i < n; i++)
+   {
+      fprintf(file, SIRF, F[i]);
+   }
+   LyF();
+   fprintf(file, "\n");
+   fprintf(file, "y, полученный из F - ");
    for (int i = 0; i < n; i++)
    {
       fprintf(file, SIRF, F[i]);
@@ -235,7 +274,7 @@ void Matrix::LU2()
    for (int i = 0; i < n; i++)
    {
       //int ki = ht - 1;
-      for (int k = 0; k < ht && k < i; k++) //i=j
+      for (int k = 0; k < ht && k < i; k++) // диагональные элементы
       {
          if (i >= ht)
             di[i] -= al[i][k]*au[i][k];
@@ -246,7 +285,7 @@ void Matrix::LU2()
       for (int j = 0; j<ht && n-i-j>1; j++)
       {
         // ki = ht - 1;
-         for (int k = 0; k < i && k < ht - j - 1; k++)
+         for (int k = 0; k < i && k < ht - j - 1; k++) // элементы матрицы U
          {
             if (i >= ht-1 || i + j >= ht - 1)
                au[i+j+1][ht-j-1] -= al[i][k+j+1] * au[i+j+1][k];
@@ -255,13 +294,13 @@ void Matrix::LU2()
            // ki--;
          }
       }
-      for (int j = 0; j < ht && n - i - j > 1; j++)
+      for (int j = 0; j < ht && n - i - j > 1; j++) // элементы матрицы L
       {
          //ki = ht - 2 - j;
          for (int k = 0; k < ht - j - 1 && k < i; k++)
          {
             if (i >= ht-1 || i+j>=ht-1)
-               al[j+i+1][ht-j-1] -= al[i+j+1][k] * au[i][k+j+1]; // добавим +1
+               al[j+i+1][ht-j-1] -= al[i+j+1][k] * au[i][k+j+1];
             else
                al[j+i+1][ht-j-1] -= al[i+j+1][ht-i+k-1-j] * au[i][ht-i+k];
             ////ki--;
@@ -298,20 +337,74 @@ void Matrix::Uxy()
       //real sum = 0.0;
       for (int j = 0; j < ht && j<n-i-1; j++)
       {
-            F[i] -= F[i + j + 1] * au[i+j+1][ht-1-j];
+            y[i] -= y[i + j + 1] * au[i+j+1][ht-1-j];
       }
-      F[i] /= di[i];
+      y[i] /= di[i];
    }
 }
 
-void Matrix::Multiplication()
-{
 
+void Matrix::MultiplicationXY() //найдем x
+{
+   for (int i = 0; i < n; i++)
+   {
+      y[i] = 0;
+      y[i] += di[i] * x[i];
+      for (int j = 0; j < ht && j<n-1-i; j++)
+      {
+         y[i] += au[i+j+1][ht-j-1] *x[i + j+1];
+      }
+   }
+}
+
+void Matrix::MultiplicationYF()
+{
+   for (int i = 0; i < n; i++)
+   {
+      F[i] = 0;
+      for (int j = 0; j < ht && j < i; j++)
+      {
+         if (i < ht)
+         {
+            F[i] += al[i][ht - i + j] * y[j];
+         }
+         else
+         {
+            F[i] += al[i][j] * y[i-ht + j];
+         }
+      }
+      F[i] += y[i];
+   }
 }
 
 void Matrix::SLAU()
 {
    LU2();
-   LyF();
+   MultiplicationXY();
+
    Uxy();
+   /*for (int i = 0; i < n; i++)
+   {
+      cout << x[i] << ' ';
+   }
+   cout << endl;
+   for (int i = 0; i < n; i++)
+   {
+      cout << y[i] << ' ';
+   }
+   cout << endl;*/
+   MultiplicationXY();
+   MultiplicationYF();
+   LyF();
+   /*for (int i = 0; i < n; i++)
+   {
+      cout << y[i] << ' ';
+   }
+   cout << endl;
+   for (int i = 0; i < n; i++)
+   {
+      cout << F[i] << ' ';
+   }
+   cout << endl;*/
+   MultiplicationYF();
 }

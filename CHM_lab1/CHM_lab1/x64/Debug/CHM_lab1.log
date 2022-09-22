@@ -1,2 +1,6 @@
-﻿  Main.cpp
+﻿  Matrix.cpp
+C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(204,32): warning C4244: аргумент: преобразование "real" в "const unsigned __int64", возможна потеря данных
+C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(204,44): warning C4244: аргумент: преобразование "real" в "const unsigned __int64", возможна потеря данных
+C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(221,32): warning C4244: аргумент: преобразование "real" в "const unsigned __int64", возможна потеря данных
+C:\Users\Сергей\source\repos\CHM_lab1\CHM_lab1\Matrix.cpp(221,44): warning C4244: аргумент: преобразование "real" в "const unsigned __int64", возможна потеря данных
   CHM_lab1.vcxproj -> C:\Users\Сергей\source\repos\CHM_lab1\x64\Debug\CHM_lab1.exe
